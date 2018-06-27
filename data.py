@@ -20,7 +20,7 @@ MAX_EVENTLESS = STEPS_PER_QUARTER
 QUANTIZE_STEP = 1 / STEPS_PER_QUARTER
 INITIAL_STEP = QUANTIZE_STEP / 2
 ONE_HOT_SIZE = MIDI_PITCHES * 2 + MAX_EVENTLESS
-SEQ_LENGTH = 4 * STEPS_PER_QUARTER
+SEQ_LENGTH = 8 * STEPS_PER_QUARTER
 SEQ_STEP = STEPS_PER_QUARTER + 1
 DATA_IN = "data.in"
 DATA_OUT = "data.out"
@@ -60,6 +60,7 @@ def getData():
 
     scores = []
     for i, file in enumerate(glob.glob("data/*.mid")):
+        print("\t{}. {}".format(i+1, file))
         score = ms.converter.parse(file)
         scores.append(score)
 
@@ -70,7 +71,8 @@ def getData():
     nn_output = []
 
     pad = np.zeros((SEQ_LENGTH, ONE_HOT_SIZE))
-    for score in scores:
+    for idx, score in enumerate(scores):
+        print("Generating sequences from score {}".format(idx+1))
         part = ms.instrument.partitionByInstrument(score)[0] # piano
         seq = np.array(getSequence(part))
         padded = np.concatenate([pad, seq, pad])

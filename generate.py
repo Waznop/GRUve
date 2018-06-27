@@ -1,4 +1,3 @@
-import music21 as ms
 import numpy as np
 from train import getModel, BEST_WEIGHTS
 from data import getStream, SEQ_LENGTH, ONE_HOT_SIZE, DATA_IN
@@ -59,7 +58,7 @@ if __name__ == "__main__":
     parser.add_argument("-p", type=float, help="Event probability cutoff")
     args = parser.parse_args()
     generate(
-        length = args.l if args.l else 500,
+        length=args.l if args.l else 500,
         seed=args.s,
         prob_cutoff=args.p if args.p else 0.25
     )
